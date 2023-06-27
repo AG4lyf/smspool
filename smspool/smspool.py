@@ -82,6 +82,17 @@ class smspool():
         else:
             raise Exception(response.text)
 
+    def get_suggested_countries(self, service: str):
+        """
+        Returns the list of countries suggested for the given service
+        """
+        url = self.base_url + "request/suggested_countries"
+        response = self.session.get(url, params={'key': self.apikey, 'service': service})
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(response.text)
+        
     def purchase_sms(self, country: str = "United States", service: str = "Discord", pool: str = None):
         """
         Purchases the service in the given country
@@ -141,6 +152,19 @@ class smspool():
         else:
             raise Exception(response.text)
 
+    # Carrier Lookup
+
+    def carrier_lookup(self, number: str = None):
+        """
+        Returns the carrier info of the number
+        """
+        url = self.base_url + "carrier/paid_lookup"
+        response = self.session.get(url, params={'key': self.apikey, 'phonenumber': number})
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(response.text)
+        
     # Rentals
 
     def get_rentals(self, type: int = 0):
